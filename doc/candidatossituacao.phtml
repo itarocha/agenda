@@ -1,0 +1,110 @@
+<!-- Conteudo // Mains -->
+<section class="container">
+    <div class="limite">
+        <header class="container-header bd-bot f-left w-100 f-left">
+            <h2 class="ff-opensans c-verde f-left w-100 f-28">Relatório de Situação dos Candidatos no Processo Seletivo</h2>
+            <p class="h2-p w-100">Defina os critérios para exibição do relatório</p>
+        </header>
+        <!-- Conteudo --> 
+        <div class="w-100">  
+            <div class="form-li w-2 c-cinzaesq">
+                <p class="f-13 h2-p c-verde"><b>Analista responsável:</b></p>
+                <p><?php echo $this->nomeRecrutador ?></p>
+            </div> 
+            <div class="w-1 f-left">
+                <form id="formfiltro" method="post" action="<?php echo $this->LINK_DEFAULT; ?>recrutador/relatorios/vagasporperiodo">
+                    <input type="hidden" id="cod_pessoa_juridica" value="<?php echo isset($this->formVal['cod_pessoa_juridica']) ? $this->formVal['cod_pessoa_juridica'] : ''; ?>">
+                    <ul class="f-left w-1">
+                        <li class="form-li w-3 w-margin20 <?php echo (isset($this->formErrosMsg['cod_vaga_empresa'])) ? 'form-invalido' : ''; ?>">
+                            <label class="input-label f-left">Empresa:</label>
+                            <select name="cod_vaga_empresa" id="cod_vaga_empresa" class="f-left input-select">
+                                <?php if (isset($this->rsEmpresa) && count($this->rsEmpresa) >= 0) { ?>
+                                    <option value="">Selecione uma opção ...</option>
+                                <?php } ?>
+                                <?php foreach ($this->rsEmpresa as $key => $value) { ?>
+                                    <option value="<?php echo $value['cod_vaga_empresa'] ?>"<?php echo (isset($this->formVal['cod_vaga_empresa']) && !empty($this->formVal['cod_vaga_empresa']) && ($this->formVal['cod_vaga_empresa'] == $value['cod_vaga_empresa'])) ? 'selected="selected"' : ''; ?>> <?php echo $value['nom_fantasia_empresa'] ?></option>
+                                <?php } ?>
+                            </select>
+                            <?php echo $this->ErrorFormat((isset($this->formErrosMsg['cod_vaga_empresa']) ? $this->formErrosMsg['cod_vaga_empresa'] : null), 'errorUl'); ?>
+                        </li>
+
+                        <li class="form-li w-3 <?php echo (isset($this->formErrosMsg['cod_processo_seletivo'])) ? 'form-invalido' : ''; ?>">
+                            <label class="input-label f-left">Processo Seletivo:</label>
+                            <select name="cod_processo_seletivo" id="cod_processo_seletivo" class="f-left input-select">
+                                <?php if (isset($this->rsProcessos) && count($this->rsProcessos) >= 0) { ?>
+                                    <option value="">Selecione uma opção ...</option>
+                                <?php } ?>
+                                <?php foreach ($this->rsProcessos as $key => $value) { ?>
+                                    <option value="<?php echo $value['cod_processo_seletivo'] ?>"<?php echo (isset($this->formVal['cod_processo_seletivo']) && !empty($this->formVal['cod_processo_seletivo']) && ($this->formVal['cod_processo_seletivo'] == $value['cod_processo_seletivo'])) ? 'selected="selected"' : ''; ?>> <?php echo $value['nom_processo_seletivo'] ?></option>
+                                <?php } ?>
+                            </select>
+                            <?php echo $this->ErrorFormat((isset($this->formErrosMsg['cod_processo_seletivo']) ? $this->formErrosMsg['cod_processo_seletivo'] : null), 'errorUl'); ?>
+                        </li>
+                        
+                        <li class="form-li w-3 w-margin20">
+                            <label class="input-label f-left">Situação no Processo:</label>
+                            <?php
+                            $ind_situacao_candidato = isset($this->formVal['ind_situacao_candidato']) ? $this->formVal['ind_situacao_candidato'] : '';
+                            ?>
+                            <select name="ind_situacao_candidato" id="ind_situacao_candidato" class="f-left input-select">
+                                <option value="" <?php echo ($ind_situacao_candidato == '') ? ' selected="selected"' : ''; ?>>Todas</option>
+                                <?php foreach ($this->rsSituacaoCandidato as $key => $value) { ?>
+                                    <option value="<?php echo $key; ?>" label="<?php echo $value; ?>"<?php echo ($ind_situacao_candidato == $key) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
+                                <?php } ?>
+                            </select>
+                        </li>
+                        <li class="form-li w-3 ">
+                            <label class="input-label f-left">Status da vaga:</label>
+                            <?php
+                            $ind_vaga_status = isset($this->formVal['ind_vaga_status']) ? $this->formVal['ind_vaga_status'] : '';
+                            ?>
+                            <select name="ind_vaga_status" id="ind_vaga_status" class="f-left input-select">
+                                <option value="" <?php echo ($ind_vaga_status == '') ? ' selected="selected"' : ''; ?>>Todas</option>
+                                <?php foreach ($this->rsVagaStatus as $key => $value) { ?>
+                                    <option value="<?php echo $key; ?>" label="<?php echo $value; ?>"<?php echo ($ind_vaga_status == $key) ? ' selected="selected"' : ''; ?>><?php echo $value; ?></option>
+                                <?php } ?>
+                            </select>
+                        </li>
+                        <li class="form-li w-100">
+                            <input id="btEnviar" type="button" value="Gerar" class="b-submit-maior-ic b-ic-check c-branco bg-azul f-left" />
+                        </li>
+                    </ul>
+                </form>
+            </div> 
+            <div class="form-ul f-left">
+                <table width="100%" border="0" cellspacing="0" cellpadding="0" class="list-container">
+                    <!-- Header -->
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Empresa</th>
+                            <th>Situação no Processo</th>
+                            <th>Pontuação</th>
+                            <th>Percepção</th>
+                        </tr>
+                    </thead>
+                    <!-- Main -->
+                    <tbody>
+                        <?php foreach ($this->rsListagem as $key => $value) { ?>
+                            <tr>
+                                <td><?php echo $value['nom_pessoa'] ?></td>
+                                <td><?php echo $value['nom_fantasia_empresa'] ?></td>
+                                <td><?php echo $value['des_situacao_candidato'] ?></td>
+                                <td><?php echo $value['pontos'] ?></td>
+                                <td><?php echo $value['des_percepcao'] ?></td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+                <div class="f-left list-pag-ul bd-top w-100">
+                    <span>Total de candidatos listados: <?php echo $this->paginationTotalCount; ?> </span>               
+                    <?php echo $this->paginationControl($this->pagination, 'Sliding', 'pagination.phtml'); ?>
+                </div>
+            </div>
+            <div class="w-100 f-left">
+                <div id="bt_imprimir" class="b-maior c-branco bg-verde f-left">Imprimir</div>
+                <a href="<?php echo $this->LINK_DEFAULT; ?>recrutador/relatorios" class="b-submit-maior-ic b-ic-voltar c-branco bg-cinza f-left w-margin-left20">Retornar</a>
+            </div>
+        </div>
+    </div>      
+</section>

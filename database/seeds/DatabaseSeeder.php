@@ -4,6 +4,7 @@ use Illuminate\Database\Seeder;
 use App\Cidade;
 use App\Bairro;
 use App\Contato;
+use App\User;
 use App\ModelValidator;
 
 // php artisan db:seed
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder
     }
 }
 
+
 class PopulaTabelasSeeder extends Seeder {
 
   public function run(){
@@ -28,6 +30,22 @@ class PopulaTabelasSeeder extends Seeder {
       DB::table('contatos')->delete();
       DB::table('bairros')->delete();
       DB::table('cidades')->delete();
+
+      DB::table('users')->delete();
+
+      $usuarios = User::get();
+
+      if($usuarios->count() == 0) {
+          User::create(array(
+              'email' => 'admin@gmail.com',
+              'password' => Hash::make('admin'),
+              'name'  => 'Administrador',
+              'isAdmin'  => 'S',
+              'podeAlterar'  => 'S',
+              'podeIncluir'  => 'S',
+              //'tipo'  => 'admin'
+          ));
+      }
 
       $uberlandia = Cidade::create(array(
         'nome'                  => 'Uberlândia',
