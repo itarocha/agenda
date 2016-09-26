@@ -14,7 +14,4 @@ class Cidade extends Model
       return $this->hasMany('Bairro');
     }
 
-    public function contatos(){
-      return $this->belongsToMany('Contato','id','id_bairro');
-    }
 }

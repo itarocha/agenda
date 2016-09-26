@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
 use Validator;
 
 class Bairro extends Model
@@ -16,6 +17,10 @@ class Bairro extends Model
 
     public function cidade(){
       return $this->belongsTo('Cidade');
+    }
+
+    public function contatos(){
+      return $this->hasMany('Contato','id','id_bairro');
     }
 
     public function getRules(){

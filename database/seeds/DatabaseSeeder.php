@@ -32,53 +32,41 @@ class PopulaTabelasSeeder extends Seeder {
       $uberlandia = Cidade::create(array(
         'nome'                  => 'Uberlândia',
         'uf'                    => 'MG',
-        'id_usuario_inclusao'    => 1,
-        'id_usuario_alteracao'  => 1,
       ));
 
       $bh = Cidade::create(array(
         'nome'                  => 'Belo Horizonte',
         'uf'                    => 'MG',
-        'id_usuario_inclusao'    => 1,
-        'id_usuario_alteracao'  => 1,
       ));
 
       $this->command->info('Inserindo o primeiro...');
-
       Bairro::create(array(
         'nome'                  => 'Jaraguá',
         'id_cidade'             => $uberlandia->id,
-        'id_usuario_inclusao'    => 1,
-        'id_usuario_alteracao'  => 1,
       ));
 
       $this->command->info('Inserindo o segundo...');
-
       Bairro::create(array(
         'nome'                  => 'Tubalina',
         'id_cidade'             => $uberlandia->id,
-        'id_usuario_inclusao'    => 1,
-        'id_usuario_alteracao'  => 1,
       ));
 
+      $this->command->info('Inserindo o terceiro...');
       Bairro::create(array(
         'nome'                  => 'Umuarama',
         'id_cidade'             => $uberlandia->id,
-        'id_usuario_inclusao'    => 1,
-        'id_usuario_alteracao'  => 1,
       ));
+
+      $this->command->info('Inserindo o quarto...');
       Bairro::create(array(
         'nome'                  => 'Pampulha',
         'id_cidade'             => $bh->id,
-        'id_usuario_inclusao'    => 1,
-        'id_usuario_alteracao'  => 1,
       ));
 
+      $this->command->info('Validando e inserindo o quinto...');
       $new = array(
         'nome'                  => 'Ouro Preto',
         'id_cidade'             => $bh->id,
-        'id_usuario_inclusao'    => 1,
-        'id_usuario_alteracao'  => 1,
       );
 
 

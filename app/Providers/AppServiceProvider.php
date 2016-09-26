@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Cidade;
+use App\Bairro;
+use App\Observers\AuditoriaObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +16,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Cidade::observe(AuditoriaObserver::class);
+        Bairro::observe(AuditoriaObserver::class);
     }
 
     /**
