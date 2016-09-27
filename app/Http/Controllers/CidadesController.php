@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\PetraOpcaoFiltro;
 use App\Util\PetraInjetorFiltro;
 use App\Model\CidadesDAO;
+use App\Util\PetraConsts;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -36,7 +37,6 @@ class CidadesController extends Controller
            $model->appends([$key => $value]);
         }
 
-
         //$model->setPath('custom/url');
         return view("cidades.index")
           ->with('model',$model)
@@ -59,7 +59,7 @@ class CidadesController extends Controller
         // o form de inclusão e edição são os mesmos
     		return view('cidades.edit')
           			->with('model',$model)
-                ->with('estados',$this->dao->getEstados())
+                ->with('estados', PetraConsts::getEstados())
           			->with('titulo',$titulo);
     }
 
@@ -81,7 +81,7 @@ class CidadesController extends Controller
       // o form de inclusão e edição são os mesmos
       return view('cidades.edit')
               ->with('model',$model)
-              ->with('estados',$this->dao->getEstados())
+              ->with('estados',PetraConsts::getEstados())
               ->with('titulo',$titulo);
     }
 
@@ -102,14 +102,14 @@ class CidadesController extends Controller
             return redirect()
                     ->route('cidades.edit', [$id])
                     ->with('model',$model)
-                    ->with('titulo','Editar Cidade POST BACK ERRO')
+                    ->with('titulo','Editar Cidade')
                     ->withErrors($validator);
           } else {
             return redirect()
                     ->route('cidades.create')
                     ->with('model',$model)
                     ->withErrors($validator)
-                    ->with('titulo','Nova Cidade POST BACK ERRO');
+                    ->with('titulo','Nova Cidade');
           }
         } // end validator.fails
 

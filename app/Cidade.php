@@ -14,4 +14,9 @@ class Cidade extends Model
       return $this->hasMany('Bairro');
     }
 
+    public function getRules(){
+      return array( 'nome' => 'required|min:3|max:64',
+                    'uf' => 'required|min:2|max:2');
+    }
+
 }
