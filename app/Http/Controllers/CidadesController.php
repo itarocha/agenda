@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Validator;
 use Session;
+use App\Cidade;
 
 class CidadesController extends Controller
 {
@@ -34,6 +35,7 @@ class CidadesController extends Controller
         foreach ($request->query as $key => $value){
            $model->appends([$key => $value]);
         }
+
 
         //$model->setPath('custom/url');
         return view("cidades.index")

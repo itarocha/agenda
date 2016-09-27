@@ -7,6 +7,7 @@ use DB;
 use Auth;
 use Laravel\Database\Exception;
 use Carbon;
+use App\Cidade;
 
 class CidadesDAO {
 
@@ -77,11 +78,12 @@ class CidadesDAO {
   }
 
   private function getListagem(PetraOpcaoFiltro $q, $porPagina = 10){
+    /*
+    // REFATORAR
     $query = DB::table('cidades as tb')
               ->select( 'tb.id', 'tb.nome', 'tb.uf')
               ->orderBy('tb.nome');
 
-    // montagem de pesquisa
     if (($q != null) && ($q->valido))
     {
       if ($q->op == "like")
@@ -95,11 +97,14 @@ class CidadesDAO {
         $query->where('tb.'.$q->campo,$q->op,$q->valor_principal);
       }
     }
+    */
 
     if ( isset($porPagina) && ($porPagina > 0)){
-        $retorno = $query->paginate($porPagina);
+        $retorno = Cidade::orderBy('nome')->paginate($porPagina);
+        //$retorno = $query->paginate($porPagina);
     } else {
-      $retorno = $query->get();
+      //$retorno = $query->get();
+      $retorno = Cidade::orderBy('nome')->get();
     }
 
     return $retorno;
@@ -114,12 +119,16 @@ class CidadesDAO {
   }
 
   public function getById($id){
+    /*
+    REFATORADO
+
     $query = DB::table('cidades as tb')
               ->select('tb.id', 'tb.nome', 'tb.uf')
               ->where('tb.id','=',$id);
-    // Retorna apenas um registro. Se não encontra, retorna null
     $retorno = $query->first();
     return $retorno;
+    */
+    return Cidade::find($id);
   }
 
   public function insert($array){

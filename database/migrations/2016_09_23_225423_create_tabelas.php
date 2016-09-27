@@ -5,9 +5,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 // php artisan make:migration create_tabelas --create=cidades
-// php artisan migrate
+// *** php artisan migrate
 // php artisan make:model Cidade
-// php artisan db:seed
+// *** php artisan db:seed
 
 class CreateTabelas extends Migration
 {
