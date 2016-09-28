@@ -10,7 +10,6 @@ use Carbon;
 use App\Cidade;
 use App\ModelValidator;
 
-
 class CidadesDAO {
 
   protected $_estados;
@@ -39,7 +38,6 @@ class CidadesDAO {
   }
 
   private function getListagem(PetraOpcaoFiltro $q, $porPagina = 10){
-    /*
     // REFATORAR
     $query = DB::table('cidades as tb')
               ->select( 'tb.id', 'tb.nome', 'tb.uf')
@@ -58,37 +56,23 @@ class CidadesDAO {
         $query->where('tb.'.$q->campo,$q->op,$q->valor_principal);
       }
     }
-    */
 
     if ( isset($porPagina) && ($porPagina > 0)){
-        $retorno = Cidade::orderBy('nome')->paginate($porPagina);
-        //$retorno = $query->paginate($porPagina);
+        //$retorno = Cidade::orderBy('nome')->paginate($porPagina);
+        $retorno = $query->paginate($porPagina);
     } else {
-      //$retorno = $query->get();
-      $retorno = Cidade::orderBy('nome')->get();
+      $retorno = $query->get();
+      //$retorno = Cidade::orderBy('nome')->get();
     }
-
     return $retorno;
   }
 
   public function novo(){
-  		//$retorno = new StdClass; //array('id'=>0,'descricao'=>'');
-  		//$retorno->id = 0;
-  		//$retorno->descricao = '';
   		$retorno = array('id'=>0, 'nome'=>'','uf' => 'MG');
   		return (object)$retorno; // Retorna um new StdClass;
   }
 
   public function getById($id){
-    /*
-    REFATORADO
-
-    $query = DB::table('cidades as tb')
-              ->select('tb.id', 'tb.nome', 'tb.uf')
-              ->where('tb.id','=',$id);
-    $retorno = $query->first();
-    return $retorno;
-    */
     return Cidade::find($id);
   }
 
@@ -130,22 +114,21 @@ class CidadesDAO {
     }
   }
 
+
   public function delete($id)
   {
+    $model = Cidade::find($id);
+    if (!$model){
+      return (object)array( 'status'=>404,
+                            'mensagem'=>'Não encontrado');
+    }
 
-    //$bear = Bear::find(1);
-    //$bear->delete();
-
-
-    $affected = DB::table('cidades')
-                ->where('id',$id)
-                ->delete();
-    if ($affected == 1) {
+    if ($model->delete()) {
       return (object)array( 'status'=>200,
                             'mensagem'=>'Excluído com sucesso');
     } else {
-      return (object)array( 'status'=>404,
-                            'mensagem'=>'Não encontrado');
+      return (object)array( 'status'=>500,
+                            'mensagem'=>'Não foi possível excluir');
     }
   }
 }

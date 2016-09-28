@@ -9,8 +9,8 @@ class VerificaPermissoes
 {
 
     private $livres = array("home.index", "login", "logout",
-      "cidades.index","cidades.edit","cidades.create", "cidades.store","cidades.delete",
-      "bairros.index","bairros.edit","bairros.create", "bairros.store","bairros.delete",
+      "cidades.index","cidades.edit","cidades.create", "cidades.store","cidades.delete", "cidades.destroy",
+      "bairros.index","bairros.edit","bairros.create", "bairros.store","bairros.delete", "bairros.destroy",
       "contatos.index","contatos.ligar","contatos.imprimir"
       );
     private $administrativas = array( "register", "contatos.delete", "usuarios.index",
