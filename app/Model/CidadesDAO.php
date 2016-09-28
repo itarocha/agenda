@@ -8,6 +8,8 @@ use Auth;
 use Laravel\Database\Exception;
 use Carbon;
 use App\Cidade;
+use App\ModelValidator;
+
 
 class CidadesDAO {
 
@@ -91,74 +93,41 @@ class CidadesDAO {
   }
 
   public function insert($array){
+    $v = new ModelValidator();
+    $obj = new Cidade();
 
-    // $obj = new Cidade();
-    // $v = new ModelValidator();
-    //
-    // if ($v->validate($new, $obj->getRules())){
-    //   $obj->fill($new);
-    //   $obj->save();
-    // } else {
-    //   dd($v->errors());
-    // }
-
-
-
-    try {
-      $array['id_usuario_criacao'] = Auth::user()->id;
-      $array['data_hora_criacao'] = Carbon\Carbon::now();
-      $array['id_usuario_alteracao'] = Auth::user()->id;
-      $array['data_hora_alteracao'] = Carbon\Carbon::now();
-
-      $id = DB::table('cidades')->insertGetId($array);
-      return (object)array( 'id' => $id,
+    if ($v->validate($array, $obj->getRules())){
+      $obj->fill($array);
+      $id = $obj->save();
+      return (object)array( 'id' => $obj->id,
                             'status' => 200,
                             'mensagem' => 'Criado com sucesso');
-    } catch (\Exception $e){
+    } else {
       return (object)array( 'id' => -1,
                             'status' => 500,
-                            'mensagem' => $e->getMessage());
+                            'mensagem' => "Erro ao gravar",
+                            'errors' => $v->errors(),
+                          );
     }
   }
 
   public function update($id, $array){
-
-
-    // $task = Task::findOrFail($id);
-    // $this->validate($request, [
-    //         'title' => 'required',
-    //         'description' => 'required'
-    //     ]);
-    // $task->fill($input)->save();
-
-    $model = $this->getById($id);
-
-    if (!$model){
+    $obj = Cidade::find($id);
+    if (!$obj){
       return (object)array( 'status'=>404,
                             'mensagem'=>'Não encontrado');
     }
-    try {
-      $array['id_usuario_alteracao'] = Auth::user()->id;
-      $array['data_hora_alteracao'] = Carbon\Carbon::now();
-
-      $affected = DB::table('cidades')
-                    ->where('id',$id)
-                    ->update($array);
-      $retorno = ($affected == 1) ? 200 : 204;
-      if ($affected == 1) {
-        return (object)array(   'status'=>200,
-                                'mensagem'=>'Alterado com sucesso');
-      } else {
-          return (object)array( 'status'=>204,
-                                'mensagem'=>'Registro não necessita ser modificado');
-      }
-    } catch (\Exception $e) {
-        //Campo inválido, erro de sintaxe
-        return (object)array('status'=>500,
-            'mensagem'=>'Falha ao alterar registro. Erro de sintaxe ou violação de chave'
-            .$e->getMessage());
+    $v = new ModelValidator();
+    if ($v->validate($array, $obj->getRules())){
+      $obj->fill($array)->save();
+      return (object)array(   'status'=>200,
+                              'mensagem'=>'Alterado com sucesso');
+    } else {
+      return (object)array( 'status' => 500,
+                            'mensagem' => "Erro ao gravar",
+                            'errors' => $v->errors(),
+                          );
     }
-    return $retorno;
   }
 
   public function delete($id)

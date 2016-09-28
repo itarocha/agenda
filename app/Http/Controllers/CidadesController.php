@@ -94,37 +94,31 @@ class CidadesController extends Controller
         $id = $request->input('id');
         $editando = $id;
         $all = $request->all();
-        // Valida campos apartir das regras estabelecidas no DAO injetado
-        $validator = Validator::make($all, $this->dao->getRules());
-        if ($validator->fails()){
-          $model = (object)$all;
-          if ($editando) {
-            return redirect()
-                    ->route('cidades.edit', [$id])
-                    ->with('model',$model)
-                    ->with('titulo','Editar Cidade')
-                    ->withErrors($validator);
-          } else {
-            return redirect()
-                    ->route('cidades.create')
-                    ->with('model',$model)
-                    ->withErrors($validator)
-                    ->with('titulo','Nova Cidade');
-          }
-        } // end validator.fails
 
         // Aproveita somente os campos para gravação
         $all = $request->only(['nome','uf']);
         if ($editando){
           $retorno = $this->dao->update($id,$all);
         } else {
-          $retorno = $this->dao->insert($all);
+          $retorno = $this->dao->insert($request->all());
         }
 
         if ($retorno->status == 200) {
           return redirect('cidades')->with('mensagem',$retorno->mensagem);
         } else {
-          return redirect('cidades')->with('msgerro',$retorno->mensagem);
+            if ($editando) {
+              return redirect()
+                      ->route('cidades.edit', [$id])
+                      ->with('model',(object)$request->all())
+                      ->with('titulo','Editar Cidade')
+                      ->withErrors($retorno);
+            } else {
+              return redirect()
+                      ->route('cidades.create')
+                      ->with('model',(object)$request->all())
+                      ->withErrors($retorno)
+                      ->with('titulo','Nova Cidade');
+            }
         }
     }
 
