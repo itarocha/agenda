@@ -13,6 +13,8 @@ use Validator;
 use Session;
 use App\Cidade;
 
+
+
 class CidadesController extends Controller
 {
     protected $dao;
