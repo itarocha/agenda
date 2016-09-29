@@ -4,6 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Validator;
+use App\Cidade;
+use App\Contato;
+
 
 class Bairro extends Model
 {
@@ -11,7 +14,7 @@ class Bairro extends Model
     protected $fillable = array('nome', 'id_cidade');
 
     public function cidade(){
-      return $this->belongsTo('Cidade');
+      return $this->belongsTo('App\Cidade', 'id_cidade');
     }
 
     public function contatos(){

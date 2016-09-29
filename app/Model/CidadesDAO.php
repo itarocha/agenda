@@ -6,16 +6,16 @@ namespace App\Model;
 use DB;
 use Auth;
 use Laravel\Database\Exception;
-use Carbon;
-use App\Cidade;
-use App\ModelValidator;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Container\Container as App;
+//use Carbon;
+//use App\Cidade;
+//use App\ModelValidator;
+//use Illuminate\Database\Eloquent\Model;
+//use Illuminate\Container\Container as App;
 
 
 class CidadesDAO extends AbstractDAO {
 
-  private $app;
+  //private $app;
 
   function model(){
     return 'App\Cidade';
@@ -30,21 +30,19 @@ class CidadesDAO extends AbstractDAO {
 
   public function getListagem(PetraOpcaoFiltro $q, $porPagina = 10){
     // REFATORAR
-    $query = DB::table('cidades as tb')
-              ->select( 'tb.id', 'tb.nome', 'tb.uf')
-              ->orderBy('tb.nome');
+    $query = Cidade::->select( 'id', 'nome', 'uf')->orderBy('nome');
 
     if (($q != null) && ($q->valido))
     {
       if ($q->op == "like")
       {
-        $query->where('tb.'.$q->campo,"like","%".$q->valor_principal."%");
+        $query->where($q->campo,"like","%".$q->valor_principal."%");
       } else
       if ($q->op == "between")
       {
-         $query->whereBetween('tb.'.$q->campo,[$q->valor_principal, $q->valor_complemento]);
+         $query->whereBetween($q->campo,[$q->valor_principal, $q->valor_complemento]);
       } else {
-        $query->where('tb.'.$q->campo,$q->op,$q->valor_principal);
+        $query->where($q->campo,$q->op,$q->valor_principal);
       }
     }
 

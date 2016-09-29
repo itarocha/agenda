@@ -15,17 +15,19 @@ use Session;
 class BairrosController extends Controller
 {
     protected $dao;
+    protected $cidadesdao;
 
     // Injeta o DAO no construtor
-    public function __construct(BairrosDAO $dao)
+    public function __construct(BairrosDAO $dao, CidadesDAO $cidadesdao)
     {
       //$this->middleware('auth')->except('ajaxbairrosporcidade');
       $this->dao = $dao;
+      $this->cidadesdao = $cidadesdao;
     }
 
     private function getCidades(){
-      $cidades = new CidadesDAO();
-      return $cidades->all(0);
+      //$cidades = new CidadesDAO();
+      return $this->cidadesdao->all(0);
     }
 
     // GET /bairros
