@@ -100,38 +100,34 @@ class BairrosController extends Controller
         $id = $request->input('id');
         $editando = $id;
         $all = $request->all();
-        // Valida campos apartir das regras estabelecidas no DAO injetado
-        $validator = Validator::make($all, $this->dao->getRules());
-        if ($validator->fails()){
-          $model = (object)$all;
-          if ($editando) {
-            return redirect()
-                    ->route('bairros.edit', [$id])
-                    ->with('model',$model)
-                    ->with('titulo','Editar Bairro')
-                    ->withErrors($validator);
-          } else {
-            return redirect()
-                    ->route('bairros.create')
-                    ->with('model',$model)
-                    ->withErrors($validator)
-                    ->with('titulo','Novo Bairro');
-          }
-        } // end validator.fails
 
         // Aproveita somente os campos para gravação
         $all = $request->only(['nome','id_cidade']);
         if ($editando){
           $retorno = $this->dao->update($id,$all);
         } else {
-          $retorno = $this->dao->insert($all);
+          $retorno = $this->dao->insert($request->all());
         }
+
         if ($retorno->status == 200) {
           return redirect('bairros')->with('mensagem',$retorno->mensagem);
         } else {
-          return redirect('bairros')->with('msgerro',$retorno->mensagem);
+            if ($editando) {
+              return redirect()
+                      ->route('bairros.edit', [$id])
+                      ->with('model',(object)$request->all())
+                      ->with('titulo','Editar Bairro')
+                      ->withErrors($retorno);
+            } else {
+              return redirect()
+                      ->route('bairros.create')
+                      ->with('model',(object)$request->all())
+                      ->withErrors($retorno)
+                      ->with('titulo','Novo Bairro');
+            }
         }
     }
+
 
     // GET /bairros/{id}/delete
     // Chamará o formulário para confirmação de deleção

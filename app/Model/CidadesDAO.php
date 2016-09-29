@@ -7,7 +7,7 @@ use DB;
 use Auth;
 use Laravel\Database\Exception;
 //use Carbon;
-//use App\Cidade;
+use App\Cidade;
 //use App\ModelValidator;
 //use Illuminate\Database\Eloquent\Model;
 //use Illuminate\Container\Container as App;
@@ -30,7 +30,7 @@ class CidadesDAO extends AbstractDAO {
 
   public function getListagem(PetraOpcaoFiltro $q, $porPagina = 10){
     // REFATORAR
-    $query = Cidade::->select( 'id', 'nome', 'uf')->orderBy('nome');
+    $query = Cidade::select( 'id', 'nome', 'uf')->orderBy('nome');
 
     if (($q != null) && ($q->valido))
     {

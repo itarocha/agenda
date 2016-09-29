@@ -11,7 +11,7 @@ class Cidade extends Model
     protected $fillable = array('nome', 'uf');
 
     public function bairros(){
-      return $this->hasMany('Bairro');
+      return $this->hasMany('App\Bairro');
     }
 
     public function getRules(){

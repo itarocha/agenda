@@ -9,39 +9,32 @@ use App\Model\PetraOpcaoFiltro;
 use Auth;
 use Carbon;
 
-class ContatosDAO {
-
-  protected $_estados;
+class ContatosDAO extends AbstractDAO {
 
   public function __construct(){
       //$this->buildEstados();
   }
 
-  public function getRules(){
-
-    // $rules = [
-    //     'start_date'        => 'date_format:d/m/Y|after:tomorrow',
-    //     'end_date'          => 'date_format:d/m/Y|after:start_date',
-    // ];
-
-    return array( 'nome' => 'required|min:3|max:64',
-                  'data_nascimento' => 'required|date_format:d/m/Y',
-                  'cpf' => 'required|size:11',
-                  'titulo' => 'max:32',
-                  'secao' => 'max:8',
-                  'zona' => 'max:8',
-                  'endereco' => 'required|max:64',
-                  'numero'  => 'max:8',
-                  'complemento' => 'max:32',
-                  'id_bairro' => 'required',
-                  'cep' => 'size:8',
-                  'telefone1' => 'max:16',
-                  'telefone2' => 'max:16',
-                  'telefone3' => 'max:16',
-                  'telefone4' => 'max:16',
-                  'telefone5' => 'max:16',
-                );
-  }
+  // public function getRules(){
+  //
+  //   return array( 'nome' => 'required|min:3|max:64',
+  //                 'data_nascimento' => 'required|date_format:d/m/Y',
+  //                 'cpf' => 'required|size:11',
+  //                 'titulo' => 'max:32',
+  //                 'secao' => 'max:8',
+  //                 'zona' => 'max:8',
+  //                 'endereco' => 'required|max:64',
+  //                 'numero'  => 'max:8',
+  //                 'complemento' => 'max:32',
+  //                 'id_bairro' => 'required',
+  //                 'cep' => 'size:8',
+  //                 'telefone1' => 'max:16',
+  //                 'telefone2' => 'max:16',
+  //                 'telefone3' => 'max:16',
+  //                 'telefone4' => 'max:16',
+  //                 'telefone5' => 'max:16',
+  //               );
+  // }
 
   public function getCamposPesquisa(){
     return array(
@@ -59,16 +52,16 @@ class ContatosDAO {
         );
   }
 
-  public function all($porPagina = 10)
-  {
-    $q = new PetraOpcaoFiltro();
-    return $this->getListagem($q, $porPagina);
-  }
-
-  public function listagemComFiltro(PetraOpcaoFiltro $q, $porPagina = 10)
-  {
-      return $this->getListagem($q, $porPagina);
-  }
+  // public function all($porPagina = 10)
+  // {
+  //   $q = new PetraOpcaoFiltro();
+  //   return $this->getListagem($q, $porPagina);
+  // }
+  //
+  // public function listagemComFiltro(PetraOpcaoFiltro $q, $porPagina = 10)
+  // {
+  //     return $this->getListagem($q, $porPagina);
+  // }
 
   private function getListagem(PetraOpcaoFiltro $q, $porPagina = 10)
   {
@@ -197,53 +190,48 @@ class ContatosDAO {
     return $retorno;
   }
 
-  public function insert($array){
-    try {
-      $array['id_usuario_criacao'] = Auth::user()->id;
-      $array['data_hora_criacao'] = Carbon\Carbon::now();
-      $array['id_usuario_alteracao'] = Auth::user()->id;
-      $array['data_hora_alteracao'] = Carbon\Carbon::now();
-
-      $id = DB::table('contatos')->insertGetId($array);
-      return (object)array( 'id' => $id,
-                            'status' => 200,
-                            'mensagem' => 'Criado com sucesso');
-    } catch (\Exception $e){
-      return (object)array( 'id' => -1,
-                            'status' => 500,
-                            'mensagem' => $e->getMessage());
-    }
-  }
-
-  public function update($id, $array){
-    $model = $this->getById($id);
-    $array['id_usuario_alteracao'] = Auth::user()->id;
-    $array['data_hora_alteracao'] = Carbon\Carbon::now();
-
-    if (!$model){
-      return (object)array( 'status'=>404,
-                            'mensagem'=>'Não encontrado');
-    }
-    try {
-      $affected = DB::table('contatos')
-                    ->where('id',$id)
-                    ->update($array);
-      $retorno = ($affected == 1) ? 200 : 204;
-      if ($affected == 1) {
-        return (object)array(   'status'=>200,
-                                'mensagem'=>'Alterado com sucesso');
-      } else {
-          return (object)array( 'status'=>204,
-                                'mensagem'=>'Registro não necessita ser modificado');
-      }
-    } catch (\Exception $e) {
-        //Campo inválido, erro de sintaxe
-        return (object)array('status'=>500,
-            'mensagem'=>'Falha ao alterar registro. Erro de sintaxe ou violação de chave'
-            .$e->getMessage());
-    }
-    return $retorno;
-  }
+  // public function insert($array){
+  //   try {
+  //     $id = DB::table('contatos')->insertGetId($array);
+  //     return (object)array( 'id' => $id,
+  //                           'status' => 200,
+  //                           'mensagem' => 'Criado com sucesso');
+  //   } catch (\Exception $e){
+  //     return (object)array( 'id' => -1,
+  //                           'status' => 500,
+  //                           'mensagem' => $e->getMessage());
+  //   }
+  // }
+  //
+  // public function update($id, $array){
+  //   $model = $this->getById($id);
+  //   $array['id_usuario_alteracao'] = Auth::user()->id;
+  //   $array['data_hora_alteracao'] = Carbon\Carbon::now();
+  //
+  //   if (!$model){
+  //     return (object)array( 'status'=>404,
+  //                           'mensagem'=>'Não encontrado');
+  //   }
+  //   try {
+  //     $affected = DB::table('contatos')
+  //                   ->where('id',$id)
+  //                   ->update($array);
+  //     $retorno = ($affected == 1) ? 200 : 204;
+  //     if ($affected == 1) {
+  //       return (object)array(   'status'=>200,
+  //                               'mensagem'=>'Alterado com sucesso');
+  //     } else {
+  //         return (object)array( 'status'=>204,
+  //                               'mensagem'=>'Registro não necessita ser modificado');
+  //     }
+  //   } catch (\Exception $e) {
+  //       //Campo inválido, erro de sintaxe
+  //       return (object)array('status'=>500,
+  //           'mensagem'=>'Falha ao alterar registro. Erro de sintaxe ou violação de chave'
+  //           .$e->getMessage());
+  //   }
+  //   return $retorno;
+  // }
 
 
   public function ligar($id){

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Contato extends Model
 {
     protected $table = 'contatos';
-    
+
     protected $fillable = array('id',
               'nome',
               'data_nascimento',
@@ -31,9 +31,9 @@ class Contato extends Model
               'data_hora_ligou');
 
     public function bairro(){
-      return $this->belongsTo('Bairro');
+      return $this->belongsTo('App\Bairro', 'id_bairro');
     }
-
+    
     public function getRules(){
       return array(
         'nome' => 'required|min:3|max:64',

@@ -18,7 +18,7 @@ class Bairro extends Model
     }
 
     public function contatos(){
-      return $this->hasMany('Contato','id','id_bairro');
+      return $this->hasMany('App\Contato','id','id_bairro');
     }
 
     public function getRules(){
