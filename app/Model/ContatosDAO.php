@@ -17,102 +17,65 @@ class ContatosDAO extends AbstractDAO {
     return 'App\Contato';
   }
 
-  // public function getRules(){
-  //
-  //   return array( 'nome' => 'required|min:3|max:64',
-  //                 'data_nascimento' => 'required|date_format:d/m/Y',
-  //                 'cpf' => 'required|size:11',
-  //                 'titulo' => 'max:32',
-  //                 'secao' => 'max:8',
-  //                 'zona' => 'max:8',
-  //                 'endereco' => 'required|max:64',
-  //                 'numero'  => 'max:8',
-  //                 'complemento' => 'max:32',
-  //                 'id_bairro' => 'required',
-  //                 'cep' => 'size:8',
-  //                 'telefone1' => 'max:16',
-  //                 'telefone2' => 'max:16',
-  //                 'telefone3' => 'max:16',
-  //                 'telefone4' => 'max:16',
-  //                 'telefone5' => 'max:16',
-  //               );
-  // }
-
   public function getCamposPesquisa(){
     return array(
-      (object)array('name' => 'tb.nome', 'type' => 'text', 'display' => 'Nome'),
-      (object)array('name' => 'tb.cpf', 'type' => 'text', 'display' => 'CPF'),
-      (object)array('name' => 'tb.data_nascimento', 'type' => 'date', 'display' => 'Nascimento'),
-      (object)array('name' => 'b.nome', 'type' => 'text', 'display' => 'Bairro'),
-      (object)array('name' => 'c.nome', 'type' => 'text', 'display' => 'Cidade' ),
-      (object)array('name' => 'c.uf', 'type' => 'text', 'display' => 'UF' ),
-      (object)array('name' => 'tb.titulo', 'type' => 'text', 'display' => 'Título' ),
-      (object)array('name' => 'tb.secao', 'type' => 'text', 'display' => 'Seção' ),
-      (object)array('name' => 'tb.zona', 'type' => 'text', 'display' => 'Zona' ),
-      (object)array('name' => 'tb.ligou', 'type' => 'text', 'display' => 'Ligou (S/N)' ),
-      (object)array('name' => 'u.name', 'type' => 'text', 'display' => 'Usuário que ligou ' ),
+      (object)array('name' => 'contatos.nome', 'type' => 'text', 'display' => 'Nome'),
+      (object)array('name' => 'contatos.cpf', 'type' => 'text', 'display' => 'CPF'),
+      (object)array('name' => 'contatos.data_nascimento', 'type' => 'date', 'display' => 'Nascimento'),
+      (object)array('name' => 'bairros.nome', 'type' => 'text', 'display' => 'Bairro'),
+      (object)array('name' => 'cidades.nome', 'type' => 'text', 'display' => 'Cidade' ),
+      (object)array('name' => 'cidades.uf', 'type' => 'text', 'display' => 'UF' ),
+      (object)array('name' => 'contatos.titulo', 'type' => 'text', 'display' => 'Título' ),
+      (object)array('name' => 'contatos.secao', 'type' => 'text', 'display' => 'Seção' ),
+      (object)array('name' => 'contatos.zona', 'type' => 'text', 'display' => 'Zona' ),
+      (object)array('name' => 'contatos.ligou', 'type' => 'text', 'display' => 'Ligou (S/N)' ),
+      (object)array('name' => 'users.name', 'type' => 'text', 'display' => 'Usuário que ligou ' ),
         );
   }
 
-  // public function all($porPagina = 10)
+  // public function apply($model, Repository $repository)
   // {
-  //   $q = new PetraOpcaoFiltro();
-  //   return $this->getListagem($q, $porPagina);
+  //   $query = $model->where('length', '>', 120);
+  //   return $query;
   // }
-  //
-  // public function listagemComFiltro(PetraOpcaoFiltro $q, $porPagina = 10)
-  // {
-  //     return $this->getListagem($q, $porPagina);
-  // }
+  private function aplicaFiltro($model, PetraOpcaoFiltro $q){
+    if (($q != null) && ($q->valido))
+    {
+      if ($q->op == "like")
+      {
+        $model->where($q->campo,"like","%".$q->getValorPrincipalFormatado()."%");
+      } else
+      if ($q->op == "between")
+      {
+         $model->whereBetween($q->campo,[$q->getValorPrincipalFormatado(), $q->getValorComplementoFormatado()]);
+      } else {
+        $model->where($q->campo,$q->op,$q->getValorPrincipalFormatado());
+      }
+    }
 
+    return $model;
+  }
+
+ // Filtro estará em outra classe
   public function getListagem(PetraOpcaoFiltro $q, $porPagina = 10)
   {
-      $query = DB::table('contatos as tb')
-              ->select( 'tb.id',
-                        'tb.nome',
-                        'tb.data_nascimento',
-                        'tb.cpf',
-                        'tb.titulo',
-                        'tb.secao',
-                        'tb.zona',
-                        'tb.endereco',
-                        'tb.numero',
-                        'tb.complemento',
-                        'tb.id_bairro',
-                        'b.nome as nome_bairro',
-                        'c.id as id_cidade',
-                        'c.nome as nome_cidade',
-                        'c.uf',
-                        'tb.cep',
-                        'tb.telefone1',
-                        'tb.telefone2',
-                        'tb.telefone3',
-                        'tb.telefone4',
-                        'tb.telefone5',
-                        'tb.ligou',
-                        'tb.id_usuario_ligou',
-                        'u.name as nome_usuario_ligou',
-                        'tb.data_hora_ligou'
-                        )
-                        ->join('bairros as b','b.id','=','tb.id_bairro')
-                        ->join('cidades as c','c.id','=','b.id_cidade')
-                        ->leftJoin('users as u', 'u.id', '=', 'tb.id_usuario_ligou')
-              ->orderBy('tb.nome');
+      $query = $this->query();
+      $query = $this->aplicaFiltro($query, $q);
 
-      // montagem de pesquisa
-      if (($q != null) && ($q->valido))
-      {
-        if ($q->op == "like")
-        {
-          $query->where($q->campo,"like","%".$q->getValorPrincipalFormatado()."%");
-        } else
-        if ($q->op == "between")
-        {
-           $query->whereBetween($q->campo,[$q->getValorPrincipalFormatado(), $q->getValorComplementoFormatado()]);
-        } else {
-          $query->where($q->campo,$q->op,$q->getValorPrincipalFormatado());
-        }
-      }
+      // // montagem de pesquisa
+      // if (($q != null) && ($q->valido))
+      // {
+      //   if ($q->op == "like")
+      //   {
+      //     $query->where($q->campo,"like","%".$q->getValorPrincipalFormatado()."%");
+      //   } else
+      //   if ($q->op == "between")
+      //   {
+      //      $query->whereBetween($q->campo,[$q->getValorPrincipalFormatado(), $q->getValorComplementoFormatado()]);
+      //   } else {
+      //     $query->where($q->campo,$q->op,$q->getValorPrincipalFormatado());
+      //   }
+      // }
 
       if ( isset($porPagina) && ($porPagina > 0)){
           $retorno = $query->paginate($porPagina);
@@ -151,96 +114,52 @@ class ContatosDAO extends AbstractDAO {
   		return (object)$retorno; // Retorna um new StdClass;
   }
 
+  private function query(){
+    $query = DB::table('contatos')
+            ->select( 'contatos.id',
+                      'contatos.nome',
+                      'contatos.data_nascimento',
+                      'contatos.cpf',
+                      'contatos.titulo',
+                      'contatos.secao',
+                      'contatos.zona',
+                      'contatos.endereco',
+                      'contatos.numero',
+                      'contatos.complemento',
+                      'contatos.id_bairro',
+                      'bairros.nome as nome_bairro',
+                      'cidades.id as id_cidade',
+                      'cidades.nome as nome_cidade',
+                      'cidades.uf',
+                      'contatos.cep',
+                      'contatos.telefone1',
+                      'contatos.telefone2',
+                      'contatos.telefone3',
+                      'contatos.telefone4',
+                      'contatos.telefone5',
+                      'contatos.ligou',
+                      'contatos.id_usuario_ligou',
+                      'users.name as nome_usuario_ligou',
+                      'contatos.data_hora_ligou'
+                      )
+                      ->join('bairros','bairros.id','=','contatos.id_bairro')
+                      ->join('cidades','cidades.id','=','bairros.id_cidade')
+                      ->leftJoin('users', 'users.id', '=', 'contatos.id_usuario_ligou')
+            ->orderBy('tb.nome');
+    return $query;
+  }
+
   public function getById($id){
-    $query = DB::table('contatos as tb')
-              ->select( 'tb.id',
-                        'tb.nome',
-                        'tb.data_nascimento',
-                        'tb.cpf',
-                        'tb.titulo',
-                        'tb.secao',
-                        'tb.zona',
-                        'tb.endereco',
-                        'tb.numero',
-                        'tb.complemento',
-                        'tb.id_bairro',
-
-                        'b.nome as nome_bairro',
-                        'c.id as id_cidade',
-                        'c.nome as nome_cidade',
-                        'c.uf',
-
-                        'tb.cep',
-                        'tb.telefone1',
-                        'tb.telefone2',
-                        'tb.telefone3',
-                        'tb.telefone4',
-                        'tb.telefone5',
-                        'tb.ligou',
-                        'tb.id_usuario_ligou',
-                        'tb.data_hora_ligou'
-                        )
-
-              ->join('bairros as b','b.id','=','tb.id_bairro')
-              ->join('cidades as c','c.id','=','b.id_cidade')
-
-
-              ->where('tb.id','=',$id)
-              ->orderBy('tb.nome');
+    $query = $this->query()->where('tb.id','=',$id);
     // Retorna apenas um registro. Se não encontra, retorna null
     $retorno = $query->first();
     return $retorno;
   }
 
-  // public function insert($array){
-  //   try {
-  //     $id = DB::table('contatos')->insertGetId($array);
-  //     return (object)array( 'id' => $id,
-  //                           'status' => 200,
-  //                           'mensagem' => 'Criado com sucesso');
-  //   } catch (\Exception $e){
-  //     return (object)array( 'id' => -1,
-  //                           'status' => 500,
-  //                           'mensagem' => $e->getMessage());
-  //   }
-  // }
-  //
-  // public function update($id, $array){
-  //   $model = $this->getById($id);
-  //   $array['id_usuario_alteracao'] = Auth::user()->id;
-  //   $array['data_hora_alteracao'] = Carbon\Carbon::now();
-  //
-  //   if (!$model){
-  //     return (object)array( 'status'=>404,
-  //                           'mensagem'=>'Não encontrado');
-  //   }
-  //   try {
-  //     $affected = DB::table('contatos')
-  //                   ->where('id',$id)
-  //                   ->update($array);
-  //     $retorno = ($affected == 1) ? 200 : 204;
-  //     if ($affected == 1) {
-  //       return (object)array(   'status'=>200,
-  //                               'mensagem'=>'Alterado com sucesso');
-  //     } else {
-  //         return (object)array( 'status'=>204,
-  //                               'mensagem'=>'Registro não necessita ser modificado');
-  //     }
-  //   } catch (\Exception $e) {
-  //       //Campo inválido, erro de sintaxe
-  //       return (object)array('status'=>500,
-  //           'mensagem'=>'Falha ao alterar registro. Erro de sintaxe ou violação de chave'
-  //           .$e->getMessage());
-  //   }
-  //   return $retorno;
-  // }
-
 
   public function ligar($id){
     $model = $this->getById($id);
     $array = array();
-    $array['id_usuario_alteracao'] = Auth::user()->id;
-    $array['data_hora_alteracao'] = Carbon\Carbon::now();
 
     $array['id_usuario_ligou'] = Auth::user()->id;
     $array['data_hora_ligou'] = Carbon\Carbon::now();
@@ -271,18 +190,4 @@ class ContatosDAO extends AbstractDAO {
     return $retorno;
   }
 
-
-  public function delete($id)
-  {
-    $affected = DB::table('contatos')
-                ->where('id',$id)
-                ->delete();
-    if ($affected == 1) {
-      return (object)array( 'status'=>200,
-                            'mensagem'=>'Excluído com sucesso');
-    } else {
-      return (object)array( 'status'=>404,
-                            'mensagem'=>'Não encontrado');
-    }
-  }
 }
