@@ -23,7 +23,6 @@ class ContatosController extends Controller
     protected $dao;
     protected $cidadesDAO;
 
-
     public function __construct(ContatosDAO $dao, CidadesDAO $cidadesdao)
     {
       //$this->middleware('auth')->except('ajaxbairrosporcidade');
@@ -183,67 +182,16 @@ class ContatosController extends Controller
                     ->route('contatos.edit', [$id])
                     ->with('model',(object)$request->all())
                     ->with('titulo','Editar Contato')
-                    ->withErrors($retorno);
+                    ->withErrors($retorno->errors);
           } else {
             return redirect()
                     ->route('contatos.create')
                     ->with('model',(object)$request->all())
-                    ->withErrors($retorno)
+                    ->withErrors($retorno->errors)
                     ->with('titulo','Novo Contato');
           }
         }
 
-        // $validator = Validator::make($all, $this->dao->getRules());
-        // if ($validator->fails()){
-        //   $model = (object)$all;
-        //   if ($editando) {
-        //     return redirect()
-        //             ->route('contatos.edit', [$id])
-        //             ->with('model',$model)
-        //             ->with('titulo','Editar Contato')
-        //             ->withErrors($validator);
-        //   } else {
-        //     return redirect()
-        //             ->route('contatos.create')
-        //             ->with('model',$model)
-        //             ->withErrors($validator)
-        //             ->with('titulo','Novo Contato');
-        //   }
-        // } // end validator.fails
-
-
-
-
-        // Aproveita somente os campos para gravação
-
-        //'ligou',
-        //'id_usuario_ligou',
-        //'data_hora_ligou'
-
-        // De novo esse código???
-        // $all['cpf'] = str_replace('.', '', $all['cpf']);
-        // $all['cpf'] = str_replace('-', '', $all['cpf']);
-        // $all['cep'] = str_replace('-', '', $all['cep']);
-        //
-        // if ($editando){
-        //   $data_nascimento = Carbon\Carbon::createFromFormat('d/m/Y', $all['data_nascimento'])->toDateString();
-        //   $all['data_nascimento'] = $data_nascimento;
-        //
-        //   $retorno = $this->dao->update($id,$all);
-        //   //dd($retorno);
-        // } else {
-        //   $data_nascimento = Carbon\Carbon::createFromFormat('d/m/Y', $all['data_nascimento']);
-        //   $all['data_nascimento'] = $data_nascimento;
-        //   //Remover `id_usuario_ligou`, `data_hora_ligou`
-        //   $retorno = $this->dao->insert($all);
-        //   //dd($retorno);
-        // }
-        //
-        // if ($retorno->status == 200) {
-        //   return redirect('contatos')->with('mensagem',$retorno->mensagem);
-        // } else {
-        //   return redirect('contatos')->with('msgerro',$retorno->mensagem);
-        // }
     }
 
     // GET /cidades/{id}/delete

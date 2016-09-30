@@ -117,17 +117,16 @@ class BairrosController extends Controller
                       ->route('bairros.edit', [$id])
                       ->with('model',(object)$request->all())
                       ->with('titulo','Editar Bairro')
-                      ->withErrors($retorno);
+                      ->withErrors($retorno->errors);
             } else {
               return redirect()
                       ->route('bairros.create')
                       ->with('model',(object)$request->all())
-                      ->withErrors($retorno)
+                      ->withErrors($retorno->errors)
                       ->with('titulo','Novo Bairro');
             }
         }
     }
-
 
     // GET /bairros/{id}/delete
     // Chamará o formulário para confirmação de deleção

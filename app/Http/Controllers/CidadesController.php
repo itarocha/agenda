@@ -113,12 +113,12 @@ class CidadesController extends Controller
                       ->route('cidades.edit', [$id])
                       ->with('model',(object)$request->all())
                       ->with('titulo','Editar Cidade')
-                      ->withErrors($retorno);
+                      ->withErrors($retorno->errors);
             } else {
               return redirect()
                       ->route('cidades.create')
                       ->with('model',(object)$request->all())
-                      ->withErrors($retorno)
+                      ->withErrors($retorno->errors)
                       ->with('titulo','Nova Cidade');
             }
         }
