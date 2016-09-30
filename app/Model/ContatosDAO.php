@@ -33,63 +33,8 @@ class ContatosDAO extends AbstractDAO {
         );
   }
 
-  // public function apply($model, Repository $repository)
-  // {
-  //   $query = $model->where('length', '>', 120);
-  //   return $query;
-  // }
-  private function aplicaFiltro($model, PetraOpcaoFiltro $q){
-    if (($q != null) && ($q->valido))
-    {
-      if ($q->op == "like")
-      {
-        $model->where($q->campo,"like","%".$q->getValorPrincipalFormatado()."%");
-      } else
-      if ($q->op == "between")
-      {
-         $model->whereBetween($q->campo,[$q->getValorPrincipalFormatado(), $q->getValorComplementoFormatado()]);
-      } else {
-        $model->where($q->campo,$q->op,$q->getValorPrincipalFormatado());
-      }
-    }
-
-    return $model;
-  }
-
- // Filtro estará em outra classe
-  public function getListagem(PetraOpcaoFiltro $q, $porPagina = 10)
-  {
-      $query = $this->query();
-      $query = $this->aplicaFiltro($query, $q);
-
-      // // montagem de pesquisa
-      // if (($q != null) && ($q->valido))
-      // {
-      //   if ($q->op == "like")
-      //   {
-      //     $query->where($q->campo,"like","%".$q->getValorPrincipalFormatado()."%");
-      //   } else
-      //   if ($q->op == "between")
-      //   {
-      //      $query->whereBetween($q->campo,[$q->getValorPrincipalFormatado(), $q->getValorComplementoFormatado()]);
-      //   } else {
-      //     $query->where($q->campo,$q->op,$q->getValorPrincipalFormatado());
-      //   }
-      // }
-
-      if ( isset($porPagina) && ($porPagina > 0)){
-          $retorno = $query->paginate($porPagina);
-      } else {
-        $retorno = $query->get();
-      }
-
-      return $retorno;
-  }
-
+  // Abstrato
   public function novo(){
-  		//$retorno = new StdClass; //array('id'=>0,'descricao'=>'');
-  		//$retorno->id = 0;
-  		//$retorno->descricao = '';
   		$retorno = array('id'=>0,
                 'nome'=>'',
                 'data_nascimento'=>'',
@@ -114,7 +59,8 @@ class ContatosDAO extends AbstractDAO {
   		return (object)$retorno; // Retorna um new StdClass;
   }
 
-  private function query(){
+  // Tornar abstrato
+  function query(){
     $query = DB::table('contatos')
             ->select( 'contatos.id',
                       'contatos.nome',
@@ -145,17 +91,9 @@ class ContatosDAO extends AbstractDAO {
                       ->join('bairros','bairros.id','=','contatos.id_bairro')
                       ->join('cidades','cidades.id','=','bairros.id_cidade')
                       ->leftJoin('users', 'users.id', '=', 'contatos.id_usuario_ligou')
-            ->orderBy('tb.nome');
+            ->orderBy('contatos.nome');
     return $query;
   }
-
-  public function getById($id){
-    $query = $this->query()->where('tb.id','=',$id);
-    // Retorna apenas um registro. Se não encontra, retorna null
-    $retorno = $query->first();
-    return $retorno;
-  }
-
 
   public function ligar($id){
     $model = $this->getById($id);

@@ -16,16 +16,20 @@ use Illuminate\Container\Container as App;
 abstract class AbstractDAO {
 
   private $app;
+  private $query;
+
+
+  abstract function model();
+  abstract function getCamposPesquisa();
+  //abstract function getListagem(PetraOpcaoFiltro $q, $porPagina = 10);
+  abstract function query();
+  abstract function novo();
 
   public function __construct(App $app){
     $this->app = $app;
     $this->makeModel();
+    $this->query = $this->model->query();
   }
-
-  abstract function model();
-  abstract function getCamposPesquisa();
-  abstract function getListagem(PetraOpcaoFiltro $q, $porPagina = 10);
-  abstract function novo();
 
   private function makeModel(){
     $model = $this->app->make($this->model());
@@ -34,6 +38,37 @@ abstract class AbstractDAO {
          throw new RepositoryException("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
 
      return $this->model = $model;
+  }
+
+  public function getListagem(PetraOpcaoFiltro $q, $porPagina = 10){
+    //dd($bairros->toJson());
+    //dd($bairros);
+    $query = $this->query();
+    $query = $this->aplicaFiltro($query, $q); // AbstractDAO
+
+    if ( isset($porPagina) && ($porPagina > 0)){
+        $retorno = $query->paginate($porPagina);
+    } else {
+      $retorno = $query->get();
+    }
+    return $retorno;
+  }
+
+  public function aplicaFiltro($model, PetraOpcaoFiltro $q){
+    if (($q != null) && ($q->valido))
+    {
+      if ($q->op == "like")
+      {
+        $model->where($q->campo,"like","%".$q->getValorPrincipalFormatado()."%");
+      } else
+      if ($q->op == "between")
+      {
+         $model->whereBetween($q->campo,[$q->getValorPrincipalFormatado(), $q->getValorComplementoFormatado()]);
+      } else {
+        $model->where($q->campo,$q->op,$q->getValorPrincipalFormatado());
+      }
+    }
+    return $model;
   }
 
   public function all($porPagina = 10)
@@ -46,41 +81,6 @@ abstract class AbstractDAO {
   {
       return $this->getListagem($q, $porPagina);
   }
-
-  // private function getListagem(PetraOpcaoFiltro $q, $porPagina = 10){
-  //   // REFATORAR
-  //   $query = DB::table('cidades as tb')
-  //             ->select( 'tb.id', 'tb.nome', 'tb.uf')
-  //             ->orderBy('tb.nome');
-  //
-  //   if (($q != null) && ($q->valido))
-  //   {
-  //     if ($q->op == "like")
-  //     {
-  //       $query->where('tb.'.$q->campo,"like","%".$q->valor_principal."%");
-  //     } else
-  //     if ($q->op == "between")
-  //     {
-  //        $query->whereBetween('tb.'.$q->campo,[$q->valor_principal, $q->valor_complemento]);
-  //     } else {
-  //       $query->where('tb.'.$q->campo,$q->op,$q->valor_principal);
-  //     }
-  //   }
-  //
-  //   if ( isset($porPagina) && ($porPagina > 0)){
-  //       //$retorno = Cidade::orderBy('nome')->paginate($porPagina);
-  //       $retorno = $query->paginate($porPagina);
-  //   } else {
-  //     $retorno = $query->get();
-  //     //$retorno = Cidade::orderBy('nome')->get();
-  //   }
-  //   return $retorno;
-  // }
-
-  // public function novo(){
-  // 		$retorno = array('id'=>0, 'nome'=>'','uf' => 'MG');
-  // 		return (object)$retorno; // Retorna um new StdClass;
-  // }
 
   public function getById($id){
     $model =  $this->model->find($id);
@@ -123,7 +123,6 @@ abstract class AbstractDAO {
                             'errors' => $v->errors());
     }
   }
-
 
   public function delete($id)
   {
