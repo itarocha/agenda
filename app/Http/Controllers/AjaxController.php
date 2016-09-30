@@ -18,11 +18,11 @@ class AjaxController extends Controller
       //$this->middleware('auth')->except('ajaxbairrosporcidade');
     }
 
-    public function bairrosporcidade(Request $request){
+    public function bairrosporcidade(Request $request, BairrosDAO $dao){
       $id_cidade = $request->input('id_cidade');
       $id_bairro = $request->input('id_bairro');
 
-      $dao = new BairrosDAO();
+      //$dao = new BairrosDAO();
 
       $lista = $dao->listagemPorCidade($id_cidade);
 

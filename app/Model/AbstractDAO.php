@@ -92,6 +92,7 @@ abstract class AbstractDAO {
     $model = $this->model;
 
     if ($v->validate($array, $model->getRules())){
+
       $model->fill($array);
       $id = $model->save();
       return (object)array( 'id' => $model->id,
@@ -113,7 +114,7 @@ abstract class AbstractDAO {
     }
     $v = new ModelValidator();
     if ($v->validate($array, $model->getRules())){
-      $obj->fill($array)->save();
+      $model->fill($array)->save();
       return (object)array(   'status'=>200,
                               'mensagem'=>'Alterado com sucesso');
     } else {

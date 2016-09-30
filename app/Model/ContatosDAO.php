@@ -5,14 +5,16 @@ namespace App\Model;
 
 use DB;
 use Laravel\Database\Exception;
-use App\Model\PetraOpcaoFiltro;
-use Auth;
 use Carbon;
+use App\Model\PetraOpcaoFiltro;
+use App\Bairro;
+use App\Cidade;
+use App\Contato;
 
 class ContatosDAO extends AbstractDAO {
 
-  public function __construct(){
-      //$this->buildEstados();
+  function model(){
+    return 'App\Contato';
   }
 
   // public function getRules(){
@@ -63,7 +65,7 @@ class ContatosDAO extends AbstractDAO {
   //     return $this->getListagem($q, $porPagina);
   // }
 
-  private function getListagem(PetraOpcaoFiltro $q, $porPagina = 10)
+  public function getListagem(PetraOpcaoFiltro $q, $porPagina = 10)
   {
       $query = DB::table('contatos as tb')
               ->select( 'tb.id',

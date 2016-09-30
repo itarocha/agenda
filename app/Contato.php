@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Bairro;
 
 class Contato extends Model
 {
@@ -27,17 +28,19 @@ class Contato extends Model
               'telefone4',
               'telefone5',
               'ligou',
-              'id_usuario_ligou',
-              'data_hora_ligou');
+              //'id_usuario_ligou',
+              //'data_hora_ligou'
+            );
 
     public function bairro(){
       return $this->belongsTo('App\Bairro', 'id_bairro');
     }
-    
+
     public function getRules(){
       return array(
         'nome' => 'required|min:3|max:64',
-        'data_nascimento' => 'required|date_format:d/m/Y',
+        //'data_nascimento' => 'required|date_format:d/m/Y',
+        'data_nascimento' => 'required',
         'cpf' => 'required|size:11',
         'titulo' => 'max:32',
         'secao' => 'max:8',
