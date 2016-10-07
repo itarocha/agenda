@@ -1,11 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 use Validator;
-use App\Cidade;
-use App\Contato;
+use App\Model\Cidade;
+use App\Model\Contato;
 
 
 class Bairro extends Model
@@ -16,10 +16,10 @@ class Bairro extends Model
                            'id_cidade' => 'required');
 
     public function cidade(){
-      return $this->belongsTo('App\Cidade', 'id_cidade');
+      return $this->belongsTo('App\Model\Cidade', 'id_cidade');
     }
 
     public function contatos(){
-      return $this->hasMany('App\Contato','id','id_bairro');
+      return $this->hasMany('App\Model\Contato','id','id_bairro');
     }
 }

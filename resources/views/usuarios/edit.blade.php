@@ -50,7 +50,7 @@ $(function(){
      </div>
 
 		 <div class="col-md-4">
-        <label for="podeIncluir" class="input-label f-left">Pode Incluir Candidato?</label>
+        <label for="podeIncluir" class="input-label f-left">Pode Incluir?</label>
 				<select class="input-text f-left" name="podeIncluir" id="podeIncluir">
  				 	<option value="{{ $model->podeIncluir }}" {{ $model->podeIncluir == 'S' ? 'selected="selected"' : '' }}>Sim</option>
  				 	<option value="{{ $model->podeIncluir }}" {{ $model->podeIncluir == 'N' ? 'selected="selected"' : '' }}>Não</option>
@@ -58,7 +58,7 @@ $(function(){
       </div>
 
 			<div class="col-md-4">
-	       <label for="podeAlterar" class="input-label f-left">Pode Alterar Candidato?</label>
+	       <label for="podeAlterar" class="input-label f-left">Pode Alterar?</label>
 				 <select class="input-text f-left" name="podeAlterar" id="podeAlterar">
   				 	<option value="{{ $model->podeAlterar }}" {{ $model->podeAlterar == 'S' ? 'selected="selected"' : '' }}>Sim</option>
   				 	<option value="{{ $model->podeAlterar }}" {{ $model->podeAlterar == 'N' ? 'selected="selected"' : '' }}>Não</option>

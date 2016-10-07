@@ -47,9 +47,6 @@ class CreateTabelas extends Migration
           $table->string('nome',64);
           $table->date('data_nascimento');
           $table->string('cpf',11);
-          $table->string('titulo',32)->nullable();
-          $table->string('secao',8)->nullable();
-          $table->string('zona',8)->nullable();
           $table->string('endereco',64);
           $table->string('numero',8);
           $table->string('complemento',32)->nullable();

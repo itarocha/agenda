@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Cidade;
-use App\Bairro;
-use App\Contato;
+use App\Model\Cidade;
+use App\Model\Bairro;
+use App\Model\Contato;
 use App\User;
 use App\ModelValidator;
 

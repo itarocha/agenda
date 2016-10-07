@@ -2,16 +2,17 @@
 
 //https://bosnadev.com/2015/03/07/using-repository-pattern-in-laravel-5/#A_Repository_Implementation
 // https://laravel.com/api/5.3/Illuminate/Database/Query/Builder.html
-namespace App\Model;
+namespace App\DAO;
 
 use DB;
 use Auth;
 use Laravel\Database\Exception;
 use Carbon;
-use App\ModelValidator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Container\Container as App;
 
+use App\Util\ModelValidator;
+use App\Util\PetraOpcaoFiltro;
 
 abstract class AbstractDAO {
 

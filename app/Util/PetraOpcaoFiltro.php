@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model;
+namespace App\Util;
 
 use Illuminate\Http\Request;
 //use Illuminate\Queue\SerializesModels;
@@ -33,7 +33,7 @@ class PetraOpcaoFiltro
     public function getValorPrincipalFormatado()
     {
         if ($this->tipo == 'date'){
-          return $this->convergeData($this->valor_principal);
+          return $this->converteData($this->valor_principal);
         } else {
           return $this->valor_principal;
         }
@@ -42,13 +42,13 @@ class PetraOpcaoFiltro
     public function getValorComplementoFormatado()
     {
       if ($this->tipo == 'date'){
-        return $this->convergeData($this->valor_complemento);
+        return $this->converteData($this->valor_complemento);
       } else {
         return $this->valor_complemento;
       }
     }
 
-    private function convergeData($dta){
+    private function converteData($dta){
       return Carbon\Carbon::createFromFormat('d/m/Y', $dta )->toDateString();
     }
 

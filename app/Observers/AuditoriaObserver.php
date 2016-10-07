@@ -30,7 +30,6 @@ class AuditoriaObserver
         $model->id_usuario_alteracao = $this->id_usuario_logado;
     }
 
-
     public function deleting(Model $model)
     {
         //

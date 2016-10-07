@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\ContatosDAO;
-use App\Model\CidadesDAO;
-use App\Model\PetraOpcaoFiltro;
-use App\Util\PetraInjetorFiltro;
-
-use Illuminate\Http\Request;
-use App\Http\Requests;
-use Validator;
-use Session;
-//use Illuminate\Support\Facades\Auth;
 use Auth;
 use Carbon;
 use PDF;
 use App;
 use View;
+use Validator;
+use Session;
+use App\Http\Requests;
+use Illuminate\Http\Request;
+
+use App\DAO\ContatosDAO;
+use App\DAO\CidadesDAO;
+
+use App\Util\PetraOpcaoFiltro;
+use App\Util\PetraInjetorFiltro;
+
+//use Illuminate\Support\Facades\Auth;
 
 class ContatosController extends Controller
 {
@@ -141,9 +143,6 @@ class ContatosController extends Controller
           'nome',
           'data_nascimento',
           'cpf',
-          'titulo',
-          'secao',
-          'zona',
           'endereco',
           'numero',
           'complemento',

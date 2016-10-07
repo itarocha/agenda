@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\BairrosDAO;
-use App\Model\CidadesDAO;
+use App\DAO\BairrosDAO;
+use App\DAO\CidadesDAO;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use App\Model\PetraOpcaoFiltro;
+use App\Util\PetraOpcaoFiltro;
 use App\Util\PetraInjetorFiltro;
 use Validator;
 use Session;

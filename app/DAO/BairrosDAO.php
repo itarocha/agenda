@@ -1,18 +1,17 @@
 <?php
 
 // https://laravel.com/api/5.3/Illuminate/Database/Query/Builder.html
-namespace App\Model;
+namespace App\DAO;
 
 use DB;
 use Laravel\Database\Exception;
-use App\Model\PetraOpcaoFiltro;
-use App\Bairro;
-use App\Cidade;
+use App\Model\Bairro;
+use App\Model\Cidade;
 
 class BairrosDAO extends AbstractDAO {
 
   function model(){
-    return 'App\Bairro';
+    return 'App\Model\Bairro';
   }
 
   // Implementação de abstract

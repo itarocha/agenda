@@ -1,20 +1,20 @@
 <?php
 
 // https://laravel.com/api/5.3/Illuminate/Database/Query/Builder.html
-namespace App\Model;
+namespace App\DAO;
 
 use DB;
-use Laravel\Database\Exception;
 use Carbon;
-use App\Model\PetraOpcaoFiltro;
-use App\Bairro;
-use App\Cidade;
-use App\Contato;
+use Laravel\Database\Exception;
+use App\Util\PetraOpcaoFiltro;
+use App\Model\Bairro;
+use App\Model\Cidade;
+use App\Model\Contato;
 
 class ContatosDAO extends AbstractDAO {
 
   function model(){
-    return 'App\Contato';
+    return 'App\Model\Contato';
   }
 
   public function getCamposPesquisa(){
@@ -25,9 +25,6 @@ class ContatosDAO extends AbstractDAO {
       (object)array('name' => 'bairros.nome', 'type' => 'text', 'display' => 'Bairro'),
       (object)array('name' => 'cidades.nome', 'type' => 'text', 'display' => 'Cidade' ),
       (object)array('name' => 'cidades.uf', 'type' => 'text', 'display' => 'UF' ),
-      (object)array('name' => 'contatos.titulo', 'type' => 'text', 'display' => 'Título' ),
-      (object)array('name' => 'contatos.secao', 'type' => 'text', 'display' => 'Seção' ),
-      (object)array('name' => 'contatos.zona', 'type' => 'text', 'display' => 'Zona' ),
       (object)array('name' => 'contatos.ligou', 'type' => 'text', 'display' => 'Ligou (S/N)' ),
       (object)array('name' => 'users.name', 'type' => 'text', 'display' => 'Usuário que ligou ' ),
         );
@@ -39,9 +36,6 @@ class ContatosDAO extends AbstractDAO {
                 'nome'=>'',
                 'data_nascimento'=>'',
                 'cpf'=>'',
-                'titulo'=>'',
-                'secao'=>'',
-                'zona'=>'',
                 'endereco'=>'',
                 'numero'=>'',
                 'complemento'=>'',
@@ -66,9 +60,6 @@ class ContatosDAO extends AbstractDAO {
                       'contatos.nome',
                       'contatos.data_nascimento',
                       'contatos.cpf',
-                      'contatos.titulo',
-                      'contatos.secao',
-                      'contatos.zona',
                       'contatos.endereco',
                       'contatos.numero',
                       'contatos.complemento',

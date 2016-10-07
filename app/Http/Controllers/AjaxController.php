@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\BairrosDAO;
-use App\Model\CidadesDAO;
+use App\DAO\BairrosDAO;
+use App\DAO\CidadesDAO;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -25,12 +25,6 @@ class AjaxController extends Controller
       //$dao = new BairrosDAO();
 
       $lista = $dao->listagemPorCidade($id_cidade);
-
-
-      // foreach($bairros as $bairro){
-      //
-      // }
-
 
 
       if (count($lista) > 0) {

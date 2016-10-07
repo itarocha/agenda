@@ -1,18 +1,18 @@
 <?php
 
 // https://laravel.com/api/5.3/Illuminate/Database/Query/Builder.html
-namespace App\Model;
+namespace App\DAO;
 
 use DB;
 use Auth;
 use Laravel\Database\Exception;
-use App\Cidade;
+use App\Model\Cidade;
 
 
 class CidadesDAO extends AbstractDAO {
 
   function model(){
-    return 'App\Cidade';
+    return 'App\Model\Cidade';
   }
 
   function query(){

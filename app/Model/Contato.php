@@ -1,9 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Bairro;
+use App\Model\Bairro;
 
 class Contato extends Model
 {
@@ -51,6 +51,6 @@ class Contato extends Model
                           );
 
     public function bairro(){
-      return $this->belongsTo('App\Bairro', 'id_bairro');
+      return $this->belongsTo('App\Model\Bairro', 'id_bairro');
     }
 }

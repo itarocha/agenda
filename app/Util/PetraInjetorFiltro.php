@@ -3,7 +3,7 @@
 namespace App\Util;
 
 use Illuminate\Http\Request;
-use App\Model\PetraOpcaoFiltro;
+use App\Util\PetraOpcaoFiltro;
 
 class PetraInjetorFiltro
 {

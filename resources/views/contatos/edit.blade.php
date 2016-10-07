@@ -37,24 +37,6 @@ $(function(){
    </div> <!-- end linha -->
 	 <div class="row">
      <div class="col-md-6">
-       <label for="titulo" class="input-label f-left">Título de Eleitor:</label>
-       <input type="text" class="input-text f-left" id="titulo" name="titulo" value="{{ $model->titulo }}">
-     </div>
-
- 		<div class="col-md-3">
-       <label for="secao" class="input-label f-left">Seção:</label>
-       <input type="text" class="input-text f-left" id="secao" name="secao" value="{{ $model->secao }}">
-     </div>
-
- 		<div class="col-md-3">
-       <label for="zona" class="input-label f-left">Zona:</label>
-       <input type="text" class="input-text f-left" id="zona" name="zona" value="{{ $model->zona }}">
-     </div>
-   </div> <!-- end linha -->
-
-
-	 <div class="row">
-     <div class="col-md-6">
        <label for="endereco" class="input-label f-left">Endereço:</label>
        <input type="text" class="input-text f-left" id="endereco" name="endereco" value="{{ $model->endereco }}">
      </div>

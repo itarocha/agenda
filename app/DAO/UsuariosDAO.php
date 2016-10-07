@@ -1,10 +1,11 @@
 <?php
 
 // https://laravel.com/api/5.3/Illuminate/Database/Query/Builder.html
-namespace App\Model;
+namespace App\DAO;
 
 use DB;
 use Laravel\Database\Exception;
+use App\Util\PetraOpcaoFiltro;
 
 class UsuariosDAO {
 

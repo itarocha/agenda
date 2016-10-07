@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Model\PetraOpcaoFiltro;
+use Validator;
+use Session;
+
+use App\Util\PetraOpcaoFiltro;
 use App\Util\PetraInjetorFiltro;
-use App\Model\UsuariosDAO;
+use App\DAO\UsuariosDAO;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
-use Validator;
-use Session;
 
 class UsuariosController extends Controller
 {
