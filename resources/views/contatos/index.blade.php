@@ -1,7 +1,17 @@
 @extends('layouts.tema')
+
+<!-- Título da página -->
+@section('titulo')
+	Listagem de Contatos
+@stop
+
+<!-- Barra de pesquisa. Obrigatório apenas em páginas index -->
+@section('pesquisa')
+	@include('partials.pesquisa',['imprimir'=>'S'])
+@stop
+
+
 @section('content')
-
-
 <script>
 $(function(){
   $(".btn-modal").click(function(){
@@ -11,15 +21,18 @@ $(function(){
 });
 </script>
 
-
 <div id="teste"></div>
-<a href="/contatos/create" class="btn btn-primary">Novo Contato</a>
+
 <div id="container-main" class="container-fluid">
-<!-- <div class="row">
-  </div> -->
-@include('partials.pesquisa',['imprimir'=>'S'])
+
+  <div class="row">
+    <a href="/contatos/create" class="btn btn-primary">Novo Contato</a>
+  </div>
+
+  <div>&nbsp;</div>
 
 @if (count($model) > 0)
+<div class="row">
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
@@ -64,34 +77,38 @@ $(function(){
           </td>
           <td>
             @if($item->ligou == 'S')
-            <p class="info small"> {{ $item->nome_usuario_ligou }} </br>ligou em {{ date('d/m/Y', strtotime($item->data_hora_ligou)) }}</p>
+            <p class="info small"> {{ $item->nome_usuario_ligou }} </br>
+              ligou em {{ date('d/m/Y', strtotime($item->data_hora_ligou)) }}</p>
             @else
             <span class="label label-danger pull-down pull-down-right">Não Ligou</span>
             @endif
           </td>
 					<td>
-						<a href="/contatos/{{ $item->id }}/edit" class="btn btn-sm btn-default"><span class="text-info fa fa-edit fa-fw"></span> Editar</a>
-						<a href="/contatos/{{ $item->id }}/delete" class="btn btn-sm btn-default"><span class="text-danger fa fa-trash-o fa-fw"></span> Excluir</a>
+						<a href="/contatos/{{ $item->id }}/edit" class="btn btn-sm btn-default">
+              <span class="text-info fa fa-edit fa-fw"></span> Editar</a>
+						<a href="/contatos/{{ $item->id }}/delete" class="btn btn-sm btn-default">
+              <span class="text-danger fa fa-trash-o fa-fw"></span> Excluir</a>
             @if($item->ligou == 'N')
             <a class="btn btn-sm btn-default" role="button" data-id="{{ $item->id }}" data-nome="{{ $item->nome }}"
-               data-toggle="modal" data-target="#myModal"><span class="text-info fa fa-phone fa-fw"></span> Ligar</a>
+               data-toggle="modal" data-target="#myModal">
+               <span class="text-info fa fa-phone fa-fw"></span> Ligar</a>
             @endif
 					</td>
 				</tr>
 			@endforeach
 			</tbody>
 		</table>
-{!! $model->links() !!}
+    {!! $model->links() !!}
+  </div>
 @else
-<div class="row">
-    <div class="col-md-12 alert alert-warning" role="alert">
-      <p>Nenhum registro encontrado</p>
-    </div>
-</div>
-
-
+  <div class="row">
+      <div class="col-md-12 alert alert-warning" role="alert">
+        <p>Nenhum registro encontrado</p>
+      </div>
+  </div>
 @endif
 </div>
+
 <div class="modal small fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <form action="/contatos/ligar" method="post" class="form-horizontal" role="form"  id="frmLigar">
     <div class="modal-dialog">
@@ -114,8 +131,10 @@ $(function(){
 
         <div class="modal-footer">
            <div class="pull-right">
-              <button class="btn btn-success" id="btLigarConfirma"><i class="glyphicon glyphicon-ok"></i> Ligar</button>
-              <button class="btn btn-danger" data-dismiss="modal"><i class="glyphicon glyphicon-remove"></i> Cancelar</button>
+              <button class="btn btn-success" id="btLigarConfirma">
+                <i class="glyphicon glyphicon-ok"></i> Ligar</button>
+              <button class="btn btn-danger" data-dismiss="modal">
+                <i class="glyphicon glyphicon-remove"></i> Cancelar</button>
            </div>
         </div>
 
@@ -156,23 +175,3 @@ $(function(){
 
 
 @stop
-
-<!-- <php echo $var->format('m/d/Y H:i'); > -->
-
-<!--
-show.bs.modal
-This event fires immediately when the show instance method is called.
-
-shown.bs.modal
-This event is fired when the modal has been made visible to the user. It will wait until the CSS transition process has been fully completed before getting fired.
-
-hide.bs.modal
-This event is fired immediately when the hide instance method has been called.
-
-hidden.bs.modal
-This event is fired when the modal has finished being hidden from the user. It will wait until the CSS transition process has been fully completed before getting fired.
-
-loaded.bs.modal
-This event is fired when the modal has loaded content using the remote option.
-
--->

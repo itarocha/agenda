@@ -52,8 +52,7 @@ class ContatosController extends Controller
           $pdf = PDF::loadView('contatos.imprimir',
                     [ 'model' => $model,
                       'query'=>$query,
-                      'pesquisa'=>$this->dao->getCamposPesquisa(),
-                      'titulo'=>'Listagem de Contatos'
+                      'pesquisa'=>$this->dao->getCamposPesquisa()
                     ]);
           //return $pdf->stream();
           return $pdf->download('Contatos.pdf');
@@ -63,8 +62,7 @@ class ContatosController extends Controller
         return view("contatos.index")
           ->with('model',$model)
           ->with('query',$query)
-          ->with('pesquisa',$this->dao->getCamposPesquisa())
-          ->with('titulo','Listagem de Contatos');
+          ->with('pesquisa',$this->dao->getCamposPesquisa());
 
     }
 
@@ -72,27 +70,19 @@ class ContatosController extends Controller
     // Chama form de inclusão
     public function create(Request $request)
     {
-      //dd(Auth::user());
-       //dd($request->session());
-
         // Controle de postback
-        $titulo = Session::get('titulo', null);
         $model = Session::get('model', null);
 
-    		$titulo = $titulo ?  $titulo : 'Novo Contato';
         $model = $model ? $model : $this->dao->novo();
 
 
         //$cidadesDAO = new CidadesDAO();
         $cidades = $this->cidadesDAO->all(0);
 
-        //dd($cidades);
-
         // o form de inclusão e edição são os mesmos
     		return view('contatos.edit')
           			->with('model',$model)
-                ->with('cidades',$cidades)
-          			->with('titulo',$titulo);
+                ->with('cidades',$cidades);
     }
 
     // GET /cidades/{id}/edit
@@ -100,10 +90,8 @@ class ContatosController extends Controller
     public function edit($id)
     {
       // Controle de postback
-      $titulo = Session::get('titulo', null);
       $model = Session::get('model', null);
 
-      $titulo = $titulo ?  $titulo : 'Editar Contato';
   		$model = $model ? $model : $this->dao->getById($id);
 
       if (is_null($model)){
@@ -121,8 +109,7 @@ class ContatosController extends Controller
       // o form de inclusão e edição são os mesmos
       return view('contatos.edit')
               ->with('model',$model)
-              ->with('cidades',$cidades)
-              ->with('titulo',$titulo);
+              ->with('cidades',$cidades);
     }
 
     // POST /cidades
@@ -180,14 +167,12 @@ class ContatosController extends Controller
             return redirect()
                     ->route('contatos.edit', [$id])
                     ->with('model',(object)$request->all())
-                    ->with('titulo','Editar Contato')
                     ->withErrors($retorno->errors);
           } else {
             return redirect()
                     ->route('contatos.create')
                     ->with('model',(object)$request->all())
-                    ->withErrors($retorno->errors)
-                    ->with('titulo','Novo Contato');
+                    ->withErrors($retorno->errors);
           }
         }
 
@@ -197,11 +182,9 @@ class ContatosController extends Controller
     // Chamará o formulário para confirmação de deleção
     public function delete($id)
     {
-        $titulo = 'Confirma Exclusão de Contato?';
         $model = $this->dao->getById($id);
         return view('contatos.delete')
-                ->with('model',$model)
-                ->with('titulo',$titulo);
+                ->with('model',$model);
     }
 
     // DELETE/POST /cidades/{id}
@@ -248,8 +231,7 @@ class ContatosController extends Controller
       $pdf = PDF::loadView('contatos.imprimir',
                 [ 'model' => $model,
                   'query'=>$query,
-                  'pesquisa'=>$this->dao->getCamposPesquisa(),
-                  'titulo'=>'Listagem de Contatos'
+                  'pesquisa'=>$this->dao->getCamposPesquisa()
                 ]);
       return $pdf->stream();
       //return $pdf->download('Contatos.pdf');

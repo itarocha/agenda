@@ -84,11 +84,11 @@
 
   });
 </script>
-<form id="frmPesquisar" method="GET" class="pull-right navbar-form navbar-left" role="search">
+<form id="frmPesquisar" method="GET" class="navbar-form navbar-left" role="search">
   <div class="form-group">
+    <label>Filtrar... </label>
     <input type="hidden" id="q_print" name="q_print">
     <input type="hidden" id="q_tipo" name="q_tipo">
-    <label for="q_campo">Filtrar </label>
     <select class="form-control" id="q_campo"  name="q_campo"></select>
     <select class="form-control" id="q_operador" name="q_operador"></select>
     <input type="text" class="form-control" placeholder="Conteúdo" id="q_valor_principal" name="q_valor_principal">

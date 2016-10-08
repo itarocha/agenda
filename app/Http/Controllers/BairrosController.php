@@ -26,7 +26,6 @@ class BairrosController extends Controller
     }
 
     private function getCidades(){
-      //$cidades = new CidadesDAO();
       return $this->cidadesdao->all(0);
     }
 
@@ -47,8 +46,7 @@ class BairrosController extends Controller
         return view("bairros.index")
           ->with('model',$model)
           ->with('query',$query)
-          ->with('pesquisa',$this->dao->getCamposPesquisa())
-          ->with('titulo','Listagem de Bairros');
+          ->with('pesquisa',$this->dao->getCamposPesquisa());
     }
 
     // GET /bairros/create
@@ -56,17 +54,14 @@ class BairrosController extends Controller
     public function create()
     {
         // Controle de postback
-        $titulo = Session::get('titulo', null);
         $model = Session::get('model', null);
 
-    		$titulo = $titulo ?  $titulo : 'Novo Bairro';
         $model = $model ? $model : $this->dao->novo();
 
         // o form de inclusão e edição são os mesmos
     		return view('bairros.edit')
           			->with('model',$model)
-                ->with('cidades',$this->getCidades())
-          			->with('titulo',$titulo);
+                ->with('cidades',$this->getCidades());
     }
 
     // GET /bairros/{id}/edit
@@ -74,10 +69,8 @@ class BairrosController extends Controller
     public function edit($id)
     {
       // Controle de postback
-      $titulo = Session::get('titulo', null);
       $model = Session::get('model', null);
 
-      $titulo = $titulo ?  $titulo : 'Editar Bairro';
   		$model = $model ? $model : $this->dao->getById($id);
 
       if (is_null($model)){
@@ -87,8 +80,7 @@ class BairrosController extends Controller
       // o form de inclusão e edição são os mesmos
       return view('bairros.edit')
               ->with('model',$model)
-              ->with('cidades',$this->getCidades())
-              ->with('titulo',$titulo);
+              ->with('cidades',$this->getCidades());
     }
 
     // POST /bairros
@@ -116,14 +108,12 @@ class BairrosController extends Controller
               return redirect()
                       ->route('bairros.edit', [$id])
                       ->with('model',(object)$request->all())
-                      ->with('titulo','Editar Bairro')
                       ->withErrors($retorno->errors);
             } else {
               return redirect()
                       ->route('bairros.create')
                       ->with('model',(object)$request->all())
-                      ->withErrors($retorno->errors)
-                      ->with('titulo','Novo Bairro');
+                      ->withErrors($retorno->errors);
             }
         }
     }
@@ -132,11 +122,9 @@ class BairrosController extends Controller
     // Chamará o formulário para confirmação de deleção
     public function delete($id)
     {
-        $titulo = 'Confirma Exclusão do Bairro?';
         $model = $this->dao->getById($id);
         return view('bairros.delete')
-                ->with('model',$model)
-                ->with('titulo',$titulo);
+                ->with('model',$model);
     }
 
     // DELETE/POST /cidades/{id}

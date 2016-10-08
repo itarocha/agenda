@@ -187,62 +187,15 @@
     </div>
 
     <div class="content">
-        @if (isset($titulo) )
-        <div class="header">
-            <h1 class="page-title">{{ isset($titulo) ? $titulo : 'XXXXXXXXX' }}</h1>
-        </div>
-        @endif
-
-
       <div class="main-content">
-
-        @if ( session('mensagem') )
-        <div class="alert alert-success" role="success">
-          <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
-          {{ session('mensagem') }}</div>
-        @endif
-        @if ( session('msgerro') )
-        <div class="alert alert-error" role="success">
-          <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-          {{ session('msgerro') }}</div>
-        @endif
-
-        @if(count($errors) > 0 )
-        <div class="row">
-            <div class="col-sm-6 col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading no-collapse">Foram encontrados erros</div>
-                    <div class="panel-body">
-                      <ul>
-                        @foreach ($errors->all() as $error)
-                           <li>{{ $error }}</li>
-                        @endforeach
-                      </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-
+        <div class="header">
+          @yield('pesquisa')
+      	  <h1 class="page-title">@yield('titulo')</h1>
+      	</div>
+        @include('partials.mensagens')
         @yield('content')
-
-          <!-- Conteúdo Aqui  -->
-
-        <!-- fim do conteúdo-- >
-
-<!-- Purchase a site license to remove this link from the footer: http://www.portnine.com/bootstrap-themes -->
-
-            <!-- <footer>
-                <hr>
-                <p class="pull-right">A <a href="http://www.portnine.com/bootstrap-themes" target="_blank">Free Bootstrap Theme</a> by <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
-                <p>© 2014 <a href="http://www.portnine.com" target="_blank">Portnine</a></p>
-            </footer> -->
-
-
-
         </div>
     </div>
-
 
     <!-- <script src="/lib/bootstrap/js/bootstrap.js"></script> -->
     <script type="text/javascript">
